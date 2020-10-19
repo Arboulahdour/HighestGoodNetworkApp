@@ -60,7 +60,6 @@ const UserTableData = React.memo((props) => {
           <ResetPasswordButton user={props.user} isSmallButton={true} />
         </span>
       </td>
-      <td><button className="btn btn-outline-danger btn-sm">Status</button></td>
     </tr >
   )
 });

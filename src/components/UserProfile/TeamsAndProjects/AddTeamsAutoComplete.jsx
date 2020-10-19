@@ -20,6 +20,7 @@ const AddTeamsAutoComplete = React.memo((props) => {
         type="text"
         value={searchText}
         onChange={(e) => {
+          if (e.target.value === '') { props.onDropDownSelect(undefined) }
           onInputChange(e.target.value);
           toggle(true);
         }}
