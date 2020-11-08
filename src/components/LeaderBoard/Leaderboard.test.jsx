@@ -8,7 +8,6 @@ describe('Leaderboard page structure', () => {
   let mountedLeaderboard, props;
   beforeEach(() => {
     props = mockAdminState;
-    props.organizationData = {weeklyCommittedHours: 0, tangibletime: 0,totaltime:0};
     props.getLeaderboardData = jest.fn();
     mountedLeaderboard = shallow(<Leaderboard {...props} />);
   });
@@ -30,7 +29,7 @@ describe('Leaderboard page structure', () => {
     const leaderBoardItems = leaderBoardBody.find('tr');
     let lbData = mockAdminState.leaderBoardData;
     const lBLength = lbData.length;
-    expect(leaderBoardItems.length).toBe(lBLength + 1);
+    expect(leaderBoardItems.length).toBe(lBLength);
     
     for (let i=0; i<lBLength; i++) {
       //find that a link to each user profile exists and test the text of the Link to be the name
@@ -39,8 +38,8 @@ describe('Leaderboard page structure', () => {
       expect(linkItem.text().includes(lbData[i].name)).toBeTruthy();
 
       //check if the entries for the total time and intangibletime exist
-      expect(leaderBoardItems.containsMatchingElement(<td><span title ="Total time">{lbData[i].totaltime}</span></td>)).toBeTruthy();
-      expect(leaderBoardItems.containsMatchingElement(<td><span title ="Tangible time">{lbData[i].tangibletime}</span></td>)).toBeTruthy();
+      expect(leaderBoardItems.containsMatchingElement(<td>{lbData[i].totaltime}</td>)).toBeTruthy();
+      expect(leaderBoardItems.containsMatchingElement(<td>{lbData[i].intangibletime}</td>)).toBeTruthy();
     }
   });
 
