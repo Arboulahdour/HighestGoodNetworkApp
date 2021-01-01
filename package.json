@@ -16,6 +16,7 @@
     "date-fns": "^2.14.0",
     "diff": "^5.0.0",
     "font-awesome": "^4.7.0",
+    "fs-extra": "^9.0.1",
     "history": "^4.0.0",
     "html-to-pdfmake": "^2.0.6",
     "jest-mock-axios": "^4.2.1",
@@ -51,7 +52,8 @@
   "scripts": {
     "prestart": "npm run test",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "postbuild": "node webconfig/copyWebConfig.js",
+    "build": "react-scripts build && npm run postbuild",
     "lint": "eslint src --fix",
     "test": "cross-env CI=true react-scripts test --env=jest-environment-jsdom-sixteen",
     "test:watch": " react-scripts test --env=jest-environment-jsdom-sixteen",
