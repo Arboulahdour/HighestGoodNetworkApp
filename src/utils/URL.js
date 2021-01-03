@@ -1,13 +1,9 @@
-/* eslint-disable import/prefer-default-export */
-import axios from 'axios'
+let APIEndpoint = "";
 
-let APIEndpoint = BASE_URL;
-// if (!APIEndpoint) {
-// This is to resolve the issue in azure env variable
+// API end p[oint will be taking from the config json.
 APIEndpoint = fetch('/config.json').then((data) => {
   APIEndpoint = data.restapi;
 });
-// }
 
 export const ENDPOINTS = {
   USER_PROFILE: userId => `${APIEndpoint}/userprofile/${userId}`,

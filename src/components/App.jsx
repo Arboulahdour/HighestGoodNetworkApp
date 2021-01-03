@@ -7,7 +7,7 @@ import jwtDecode from 'jwt-decode';
 import { setCurrentUser, logoutUser } from "../actions/authActions"
 
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, HashRouter } from 'react-router-dom';
 import configureStore from '../store';
 import { PersistGate } from 'redux-persist/integration/react';
 import Loading from './common/Loading'
@@ -52,7 +52,7 @@ class App extends Component {
   // componentDidMount() {
   //   window.addEventListener('beforeunload', this.confirmAlert);
   // }
-  
+
   // componentWillUnmount() {
   //   window.removeEventListener('beforeunload', this.confirmAlert);
   // }
@@ -64,10 +64,10 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <PersistGate loading={<Loading/>} persistor={persistor}>
-          <Router>
-            { routes }
-          </Router>
+        <PersistGate loading={<Loading />} persistor={persistor}>
+          <HashRouter>
+            {routes}
+          </HashRouter>
         </PersistGate>
       </Provider>
     );
