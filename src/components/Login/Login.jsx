@@ -33,12 +33,12 @@ export class Login extends Form {
 
     if (prevProps.auth !== this.props.auth) {
       if (this.props.auth.user.new) {
-        const url = `/forcePasswordUpdate/${this.props.auth.user.userId}`;
+        const url = `#/forcePasswordUpdate/${this.props.auth.user.userId}`;
         this.props.history.push(url);
       }
       else if (this.props.auth.isAuthenticated) {
         const { state } = this.props.location;
-        this.props.history.push(state ? state.from.pathname : "/dashboard");
+        this.props.history.push(state ? state.from.pathname : "#/dashboard");
       }
     }
 

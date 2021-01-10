@@ -6,44 +6,46 @@ import { createMemoryHistory } from 'history';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { ENDPOINTS } from '../utils/URL';
-import { render, fireEvent} from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import routes from './../routes';
 import reducer from '../reducers';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, compose } from 'redux';
 const middleware = [thunk];
-const url = ENDPOINTS.LOGIN;
+const url = ENDPOINTS.LOGIN();
 const timerUrl = ENDPOINTS.TIMER(mockState.auth.user.userid);
 const userProjectsUrl = ENDPOINTS.USER_PROJECTS(mockState.auth.user.userid);
-window.confirm = jest.fn(()=>(true));
+window.confirm = jest.fn(() => (true));
 
 const server = setupServer(
-  rest.get('http://localhost:4500/api/userprofile/*', (req, res, ctx) =>  {
-      return res(ctx.status(200), ctx.json({}), )  
+  rest.get('http://localhost:4500/api/userprofile/*', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({}),)
   }),
-  rest.get('http://localhost:4500/api/dashboard/*', (req, res, ctx) =>  {
-    return res(ctx.status(200), ctx.json({leaderBoardData: [
-      {
-        "personId": "5edf141c78f1380017b829a6",
-        "name": "Dev Admin",
-        "weeklyComittedHours": 10,
-        "totaltime_hrs": 6,
-        "totaltangibletime_hrs": 6,
-        "totalintangibletime_hrs": 0,
-        "percentagespentintangible": 100,
-        "didMeetWeeklyCommitment": false,
-        "weeklycommited": 10,
-        "tangibletime": 6,
-        "intangibletime": 0,
-        "tangibletimewidth": 100,
-        "intangibletimewidth": 0,
-        "tangiblebarcolor": "orange",
-        "totaltime": 6
-      }]}), )  
+  rest.get('http://localhost:4500/api/dashboard/*', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({
+      leaderBoardData: [
+        {
+          "personId": "5edf141c78f1380017b829a6",
+          "name": "Dev Admin",
+          "weeklyComittedHours": 10,
+          "totaltime_hrs": 6,
+          "totaltangibletime_hrs": 6,
+          "totalintangibletime_hrs": 0,
+          "percentagespentintangible": 100,
+          "didMeetWeeklyCommitment": false,
+          "weeklycommited": 10,
+          "tangibletime": 6,
+          "intangibletime": 0,
+          "tangibletimewidth": 100,
+          "intangibletimewidth": 0,
+          "tangiblebarcolor": "orange",
+          "totaltime": 6
+        }]
+    }))
   }),
-  rest.get(userProjectsUrl, (req, res, ctx) =>  {
-      return res(ctx.status(200), ctx.json(
-        [
+  rest.get(userProjectsUrl, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(
+      [
         {
           "isActive": true,
           "_id": "5ad91ec3590b19002acfcd26",
@@ -52,8 +54,8 @@ const server = setupServer(
       ]
     ));
   }),
-  rest.get(timerUrl, (req, res, ctx) =>  {
-    return res(ctx.status(200), ctx.json({}), )  
+  rest.get(timerUrl, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({}),)
   }),
   rest.get('*', (req, res, ctx) => {
     console.error(`Please add request handler for ${req.url.toString()} in your MSW server requests.`);
@@ -80,9 +82,9 @@ describe('Logout behavior', () => {
     let rt = '/logout'
     const hist = createMemoryHistory({ initialEntries: [rt] });
     const store = createStore(reducer, mockState, compose(applyMiddleware(...middleware)));
-    let logoutMountedPage = renderWithRouterMatch(routes , {initialState: mockState, route: rt, store: store, history: hist});
-    let {getByLabelText} = logoutMountedPage;
-    
+    let logoutMountedPage = renderWithRouterMatch(routes, { initialState: mockState, route: rt, store: store, history: hist });
+    let { getByLabelText } = logoutMountedPage;
+
     await sleep(10);
 
     let state = store.getState();

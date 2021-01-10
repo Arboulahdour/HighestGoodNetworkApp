@@ -106,7 +106,7 @@ export const teamMemberAddAction = member => ({
  * fetching all user teams
  */
 export const getAllUserTeams = () => {
-  const userTeamsPromise = axios.get(ENDPOINTS.TEAM);
+  const userTeamsPromise = axios.get(ENDPOINTS.TEAM());
   return async (dispatch) => {
     userTeamsPromise.then((res) => {
       dispatch(teamMembersFectchACtion(res.data));
@@ -123,7 +123,7 @@ export const getAllUserTeams = () => {
 export const postNewTeam = (name, status) => {
   const data = { teamName: name, isActive: status };
   // const url = ENDPOINTS.TEAM
-  const teamCreationPromise = axios.post(ENDPOINTS.TEAM, data);
+  const teamCreationPromise = axios.post(ENDPOINTS.TEAM(), data);
   return (dispatch) => {
     teamCreationPromise.then((res) => {
       dispatch(addNewTeam(res.data, true));

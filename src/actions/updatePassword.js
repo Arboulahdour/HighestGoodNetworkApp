@@ -19,7 +19,7 @@ export const updatePassword = (userId, newpasswordData) => {
 };
 
 export const forcePasswordUpdate = (data) => {
-    const url = ENDPOINTS.FORCE_PASSWORD;
+    const url = ENDPOINTS.FORCE_PASSWORD();
     return async (dispatch) => {
         try {
             const res = await axios.patch(url, data);

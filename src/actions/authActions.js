@@ -10,7 +10,7 @@ const { tokenKey } = config
 
 export const loginUser = credentials => dispatch => {
   return httpService
-    .post(ENDPOINTS.LOGIN, credentials)
+    .post(ENDPOINTS.LOGIN(), credentials)
     .then(res => {
       if (res.data.new) {
         dispatch(setCurrentUser({ new: true, userId: res.data.userId }))
@@ -33,16 +33,16 @@ export const loginUser = credentials => dispatch => {
 }
 
 export const getHeaderData = userId => {
-	const url = ENDPOINTS.USER_PROFILE(userId)
-	return async dispatch => {
-		const res = await axios.get(url)
-		//console.log('userrprofie', res)
+  const url = ENDPOINTS.USER_PROFILE(userId)
+  return async dispatch => {
+    const res = await axios.get(url)
+    //console.log('userrprofie', res)
 
-		await dispatch(setHeaderData({
+    await dispatch(setHeaderData({
       firstName: res.data.firstName,
       profilePic: res.data.profilePic
     }))
-	}
+  }
 }
 
 export const logoutUser = () => dispatch => {
@@ -50,7 +50,7 @@ export const logoutUser = () => dispatch => {
   httpService.setjwt(false)
   dispatch(setCurrentUser(null))
 };
-  
+
 export const setCurrentUser = decoded => ({
   type: SET_CURRENT_USER,
   payload: decoded

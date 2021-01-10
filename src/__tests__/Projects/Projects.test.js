@@ -9,11 +9,11 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { ENDPOINTS } from '../../utils/URL';
 import * as Message from '../../languages/en/messages'
-import { render, fireEvent, waitFor, screen} from "@testing-library/react";
+import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import routes from '../../routes';
 
-const projectsUrl = ENDPOINTS.PROJECTS;
-const projectUrl = ENDPOINTS.PROJECT + '*';
+const projectsUrl = ENDPOINTS.PROJECTS();
+const projectUrl = ENDPOINTS.PROJECT() + '*';
 const userProfileUrl = ENDPOINTS.USER_PROFILE(mockState.auth.user.userid);
 const leaderboardUrl = ENDPOINTS.LEADER_BOARD(mockState.auth.user.userid);
 const timerUrl = ENDPOINTS.TIMER(mockState.auth.user.userid);
@@ -27,50 +27,50 @@ mockState.allProjects.fetched = false;
 mockState.allProjects.projects = [];
 
 const server = setupServer(
-  rest.get(projectsUrl, (req, res, ctx) =>  {
+  rest.get(projectsUrl, (req, res, ctx) => {
     if (addedProject) {
       return res(ctx.status(200), ctx.json(
         [
-        {
-          "isActive": true,
-          "_id": "5ad91ec3590b19002asacd26",
-          "projectName": "HG Fake Project2"
-        },         {
-          "isActive": true,
-          "_id": "5ad91ec3590b19002acfcd26",
-          "projectName": "HG Fake Project"
-        }
-      ]
-    ));
+          {
+            "isActive": true,
+            "_id": "5ad91ec3590b19002asacd26",
+            "projectName": "HG Fake Project2"
+          }, {
+            "isActive": true,
+            "_id": "5ad91ec3590b19002acfcd26",
+            "projectName": "HG Fake Project"
+          }
+        ]
+      ));
     } else {
       return res(ctx.status(200), ctx.json(
         [
-        {
-          "isActive": true,
-          "_id": "5ad91ec3590b19002acfcd26",
-          "projectName": "HG Fake Project"
-        }
-      ]
-    ));
+          {
+            "isActive": true,
+            "_id": "5ad91ec3590b19002acfcd26",
+            "projectName": "HG Fake Project"
+          }
+        ]
+      ));
     }
 
   }),
-  rest.get(userProjectsUrl, (req, res, ctx) =>  {
+  rest.get(userProjectsUrl, (req, res, ctx) => {
     if (addedProject) {
       addedProject = false;
-      
+
     }
     return res(ctx.status(200), ctx.json(
       [
-      // {
-      //   "isActive": true,
-      //   "_id": "5ad91ec3590b19002acfcd26",
-      //   "projectName": "HG Fake Project"
-      // }
-    ])); 
-    
+        // {
+        //   "isActive": true,
+        //   "_id": "5ad91ec3590b19002acfcd26",
+        //   "projectName": "HG Fake Project"
+        // }
+      ]));
+
   }),
-  rest.post(projectsUrl, (req, res, ctx) =>  {
+  rest.post(projectsUrl, (req, res, ctx) => {
     //console.log(req.body);
     if (req.body.projectName === "HG Fake Project2") {
       addedProject = true;
@@ -80,27 +80,27 @@ const server = setupServer(
       return res(ctx.status(400), ctx.json({}));
     }
 
-    
+
   }),
-  rest.delete(projectUrl, (req, res, ctx) =>  {
+  rest.delete(projectUrl, (req, res, ctx) => {
     deleteProjectCalled = true;
     return res(ctx.status(200), ctx.json({}));
   }),
-  rest.put(projectUrl, (req, res, ctx) =>  {
+  rest.put(projectUrl, (req, res, ctx) => {
     if (!req.body.isActive && req.body.projectName === "HG Fake Project") {
-        inActivateProjectCalled = true;
+      inActivateProjectCalled = true;
     } else if (!req.body.isActive && req.body.projectName === "HG Fake Project") {
-        activatedProjectCalled = true;
+      activatedProjectCalled = true;
     } else if (req.body.projectName === "HG Fake Project2") {
       nameChangeCalled = true;
     }
     return res(ctx.status(200), ctx.json({}));
-  }),    
-  rest.get(userProfileUrl, (req, res, ctx) =>  {
-      return res(ctx.status(200), ctx.json({}), )  
   }),
-  rest.get(leaderboardUrl, (req, res, ctx) =>  {
-    return res(ctx.status(200), ctx.json( [
+  rest.get(userProfileUrl, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({}),)
+  }),
+  rest.get(leaderboardUrl, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json([
       {
         "personId": "5edf141c78f1380017b829a6",
         "name": "Dev Admin",
@@ -117,10 +117,10 @@ const server = setupServer(
         "intangibletimewidth": 0,
         "tangiblebarcolor": "orange",
         "totaltime": 6
-      }]), )  
+      }]))
   }),
-  rest.get(timerUrl, (req, res, ctx) =>  {
-    return res(ctx.status(200), ctx.json({}), )  
+  rest.get(timerUrl, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({}),)
   }),
   rest.get('*', (req, res, ctx) => {
     console.error(`Please add request handler for ${req.url.toString()} in your MSW server requests.`);
@@ -143,20 +143,20 @@ describe('Projects behavior', () => {
   let projectsMountedPage;
 
   it('should update the projects list to include only the project from the server', async () => {
-    
+
     let rt = '/projects'
     const hist = createMemoryHistory({ initialEntries: [rt] });
-    projectsMountedPage = renderWithRouterMatch(routes , {initialState: mockState, route: rt, history: hist});
+    projectsMountedPage = renderWithRouterMatch(routes, { initialState: mockState, route: rt, history: hist });
 
     await waitFor(() => expect(screen.getByDisplayValue('HG Fake Project')).toBeTruthy());
     await waitFor(() => expect(screen.queryByDisplayValue('HG Food')).toBeNull());
   });
 
   it('should pop up a modal and not delete a project when the delete button is clicked and canceled', async () => {
-    
+
     let rt = '/projects'
     const hist = createMemoryHistory({ initialEntries: [rt] });
-    projectsMountedPage = renderWithRouterMatch(routes , {initialState: mockState, route: rt, history: hist});
+    projectsMountedPage = renderWithRouterMatch(routes, { initialState: mockState, route: rt, history: hist });
 
     await waitFor(() => expect(screen.getByDisplayValue('HG Fake Project')).toBeTruthy());
     fireEvent.click(screen.getByText('Delete'));
@@ -166,14 +166,14 @@ describe('Projects behavior', () => {
     await waitFor(() => expect(screen.getByDisplayValue('HG Fake Project')).toBeTruthy());
     await waitFor(() => expect(screen.queryByText('Confirm Deletion')).toBeNull());
     expect(deleteProjectCalled).toBe(false);
-    
+
   });
 
   it('should pop up a modal and not delete a project when the delete button is clicked and you click off the modal', async () => {
-    
+
     let rt = '/projects'
     const hist = createMemoryHistory({ initialEntries: [rt] });
-    projectsMountedPage = renderWithRouterMatch(routes , {initialState: mockState, route: rt, history: hist});
+    projectsMountedPage = renderWithRouterMatch(routes, { initialState: mockState, route: rt, history: hist });
 
     await waitFor(() => expect(screen.getByDisplayValue('HG Fake Project')).toBeTruthy());
     fireEvent.click(screen.getByText('Delete'));
@@ -182,17 +182,17 @@ describe('Projects behavior', () => {
     fireEvent.click(screen.getByText('Close'));
     await waitFor(() => expect(screen.getByDisplayValue('HG Fake Project')).toBeTruthy());
     await waitFor(() => expect(screen.queryByText(Message.ARE_YOU_SURE_YOU_WANT_TO + Message.DELETE + " \"" + 'HG Fake Project' + "\"? "
-    + Message.THIS_ACTION_CAN_NOT_BE_UNDONE + ". ")).toBeNull());
+      + Message.THIS_ACTION_CAN_NOT_BE_UNDONE + ". ")).toBeNull());
     expect(deleteProjectCalled).toBe(false);
-    
+
   });
 
 
   it('should pop up a modal and not delete a project when the delete button is clicked and setInactive', async () => {
-    
+
     let rt = '/projects'
     const hist = createMemoryHistory({ initialEntries: [rt] });
-    projectsMountedPage = renderWithRouterMatch(routes , {initialState: mockState, route: rt, history: hist});
+    projectsMountedPage = renderWithRouterMatch(routes, { initialState: mockState, route: rt, history: hist });
 
     await waitFor(() => expect(screen.getByDisplayValue('HG Fake Project')).toBeTruthy());
     fireEvent.click(screen.getByText('Delete'));
@@ -201,18 +201,18 @@ describe('Projects behavior', () => {
     fireEvent.click(screen.getByText('Set inactive'));
     await waitFor(() => expect(screen.getByDisplayValue('HG Fake Project')).toBeTruthy());
     await waitFor(() => expect(screen.queryByText(Message.ARE_YOU_SURE_YOU_WANT_TO + Message.DELETE + " \"" + 'HG Fake Project' + "\"? "
-    + Message.THIS_ACTION_CAN_NOT_BE_UNDONE + ". ")).toBeNull());
+      + Message.THIS_ACTION_CAN_NOT_BE_UNDONE + ". ")).toBeNull());
     expect(deleteProjectCalled).toBe(false);
     expect(inActivateProjectCalled).toBeTruthy();
     inActivateProjectCalled = false;
-    
+
   });
 
   it('should delete a project when the delete button is clicked and confirmed', async () => {
-    
+
     let rt = '/projects'
     const hist = createMemoryHistory({ initialEntries: [rt] });
-    projectsMountedPage = renderWithRouterMatch(routes , {initialState: mockState, route: rt, history: hist});
+    projectsMountedPage = renderWithRouterMatch(routes, { initialState: mockState, route: rt, history: hist });
 
     await waitFor(() => expect(screen.getByDisplayValue('HG Fake Project')).toBeTruthy());
     fireEvent.click(screen.getByText('Delete'));
@@ -224,66 +224,66 @@ describe('Projects behavior', () => {
   });
 
   it('should link to the members section', async () => {
-    
+
     let rt = '/projects'
     const hist = createMemoryHistory({ initialEntries: [rt] });
-    projectsMountedPage = renderWithRouterMatch(routes , {initialState: mockState, route: rt, history: hist});
+    projectsMountedPage = renderWithRouterMatch(routes, { initialState: mockState, route: rt, history: hist });
 
     await waitFor(() => expect(screen.getByDisplayValue('HG Fake Project')).toBeTruthy());
-    
-    await waitFor(() => 
-    expect(projectsMountedPage.container.querySelector('td a').getAttribute('href'))
-    .toBe('/project/members/5ad91ec3590b19002acfcd26')
+
+    await waitFor(() =>
+      expect(projectsMountedPage.container.querySelector('td a').getAttribute('href'))
+        .toBe('/project/members/5ad91ec3590b19002acfcd26')
     );
 
-    
+
   });
 
   it('should inactivate and then reactivate a project when the activate button is clicked', async () => {
-    
+
     let rt = '/projects'
     const hist = createMemoryHistory({ initialEntries: [rt] });
-    projectsMountedPage = renderWithRouterMatch(routes , {initialState: mockState, route: rt, history: hist});
+    projectsMountedPage = renderWithRouterMatch(routes, { initialState: mockState, route: rt, history: hist });
 
     await waitFor(() => expect(screen.getByDisplayValue('HG Fake Project')).toBeTruthy());
-    
+
     fireEvent.click(projectsMountedPage.container.querySelector('td i'));
-    
+
     await waitFor(() => expect(inActivateProjectCalled).toBeTruthy());
     inActivateProjectCalled = false;
 
     fireEvent.click(projectsMountedPage.container.querySelector('td i'));
     await waitFor(() => expect(activatedProjectCalled));
     activatedProjectCalled = false;
-    
+
   });
 
   it('should be able to change the name of a project to a new name', async () => {
-    
+
     let rt = '/projects'
     const hist = createMemoryHistory({ initialEntries: [rt] });
-    projectsMountedPage = renderWithRouterMatch(routes , {initialState: mockState, route: rt, history: hist});
+    projectsMountedPage = renderWithRouterMatch(routes, { initialState: mockState, route: rt, history: hist });
 
     await waitFor(() => expect(screen.getByDisplayValue('HG Fake Project')).toBeTruthy());
-    
-    fireEvent.change(screen.getByDisplayValue('HG Fake Project'), { target: { value: 'HG Fake Project2'}});
+
+    fireEvent.change(screen.getByDisplayValue('HG Fake Project'), { target: { value: 'HG Fake Project2' } });
     fireEvent.blur(screen.getByDisplayValue('HG Fake Project2'));
 
     await waitFor(() => expect(screen.getByDisplayValue('HG Fake Project2')).toBeTruthy());
     await waitFor(() => expect(nameChangeCalled).toBeTruthy());
     nameChangeCalled = false;
-    
+
   });
 
   it('should add a new project', async () => {
-    
+
     let rt = '/projects'
     const hist = createMemoryHistory({ initialEntries: [rt] });
-    projectsMountedPage = renderWithRouterMatch(routes , {initialState: mockState, route: rt, history: hist});
+    projectsMountedPage = renderWithRouterMatch(routes, { initialState: mockState, route: rt, history: hist });
     //HK Fake Project 3 Is an Existing name that gets thrown a 400 error
     await waitFor(() => expect(screen.getByPlaceholderText('Project Name')).toBeTruthy());
-    
-    fireEvent.change(screen.getByPlaceholderText('Project Name'), { target: { value: 'HG Fake Project2'}});
+
+    fireEvent.change(screen.getByPlaceholderText('Project Name'), { target: { value: 'HG Fake Project2' } });
     //click the add button
     fireEvent.click(projectsMountedPage.container.querySelector('.input-group-append button'));
 
@@ -291,18 +291,18 @@ describe('Projects behavior', () => {
     await waitFor(() => expect(screen.getAllByDisplayValue('HG Fake Project2').length).toBe(1));
     await waitFor(() => expect(addedProject).toBe(true));
 
-    
+
   });
 
   it('should be unable to add a project with an existing name', async () => {
 
     let rt = '/projects'
     const hist = createMemoryHistory({ initialEntries: [rt] });
-    projectsMountedPage = renderWithRouterMatch(routes , {initialState: mockState, route: rt, history: hist});
+    projectsMountedPage = renderWithRouterMatch(routes, { initialState: mockState, route: rt, history: hist });
     //HK Fake Project Is an Existing name that gets thrown a 400 error
     await waitFor(() => expect(screen.getByPlaceholderText('Project Name')).toBeTruthy());
-    
-    fireEvent.change(screen.getByPlaceholderText('Project Name'), { target: { value: 'HG Fake Project'}});
+
+    fireEvent.change(screen.getByPlaceholderText('Project Name'), { target: { value: 'HG Fake Project' } });
     //click the add button
     fireEvent.click(projectsMountedPage.container.querySelector('.input-group-append button'));
 
@@ -313,7 +313,7 @@ describe('Projects behavior', () => {
     await waitFor(() => expect(screen.getByText(Message.THIS_PROJECT_NAME_IS_ALREADY_TAKEN)).toBeTruthy());
 
 
-    
+
   });
 
 

@@ -13,7 +13,7 @@ import { UserStatus } from '../utils/enums'
  * fetching all user profiles
  */
 export const getAllUserProfile = () => {
-  const userProfilesPromise = axios.get(ENDPOINTS.USER_PROFILES)
+  const userProfilesPromise = axios.get(ENDPOINTS.USER_PROFILES())
   return async dispatch => {
     await dispatch(userProfilesFetchStartAction());
     userProfilesPromise.then(res => {

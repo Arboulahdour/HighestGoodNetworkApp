@@ -22,7 +22,7 @@ const ForgotPassword = React.memo(() => {
       forgotPassword(forgotPasswordData).then(() => {
         toast.success('A new password has been sent to your email id. Please login using new password.');
         setTimeout(() => {
-          history.push('/login');
+          history.push('#/login');
         }, 1000);
       }).catch(() => {
         toast.error('Something went wrong ! Please try again');

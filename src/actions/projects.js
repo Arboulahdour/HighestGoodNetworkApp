@@ -15,7 +15,7 @@ import { ENDPOINTS } from '../utils/URL'
  */
 export const fetchAllProjects = () => {
 
-	const request = axios.get(ENDPOINTS.PROJECTS);
+	const request = axios.get(ENDPOINTS.PROJECTS());
 
 	//console.log(ENDPOINTS.PROJECTS);
 	//console.log(request);
@@ -38,7 +38,7 @@ export const fetchAllProjects = () => {
  * @param {isActive}: the active status of new project
  */
 export const postNewProject = (projectName, isActive) => {
-	const url = ENDPOINTS.PROJECTS;
+	const url = ENDPOINTS.PROJECTS();
 	//console.log("Call API: ", url);
 	return async dispatch => {
 		let status = 200;
@@ -61,7 +61,7 @@ export const postNewProject = (projectName, isActive) => {
 					"projectName": projectName,
 					"isActive": isActive
 
-				},status
+				}, status
 			));
 
 	}
@@ -72,7 +72,7 @@ export const postNewProject = (projectName, isActive) => {
  * @param {projectId}: Id of deleted project
  */
 export const deleteProject = (projectId) => {
-	const url = ENDPOINTS.PROJECT + projectId;
+	const url = ENDPOINTS.PROJECT() + projectId;
 
 	//console.log("Delete", projectId);
 
@@ -92,7 +92,7 @@ export const deleteProject = (projectId) => {
 }
 
 export const modifyProject = (type, projectId, projectName, isActive) => {
-	const url = ENDPOINTS.PROJECT + projectId;
+	const url = ENDPOINTS.PROJECT() + projectId;
 	//console.log("set Active", projectId, projectName, isActive);
 
 	if (type === "setActive") {

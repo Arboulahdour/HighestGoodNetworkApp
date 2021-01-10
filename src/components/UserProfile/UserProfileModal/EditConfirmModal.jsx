@@ -20,7 +20,7 @@ const EditConfirmModal = (props) => {
   const history = useHistory();
   const toggle = () => {
     closeModal();
-    history.push(`/userprofile/${userProfile._id}`);
+    history.push(`#/userprofile/${userProfile._id}`);
   };
   return (
     <React.Fragment>

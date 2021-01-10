@@ -66,7 +66,7 @@ export const addNewTask = (newTask, wbsId) => {
 }
 
 export const updateNumList = (wbsId, list) => {
-  const url = ENDPOINTS.TASKS_UPDATE + '/num';
+  const url = ENDPOINTS.TASKS_UPDATE() + '/num';
   return async dispatch => {
     let status = 200;
     try {

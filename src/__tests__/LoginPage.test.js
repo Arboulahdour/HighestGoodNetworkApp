@@ -17,7 +17,7 @@ import { clearErrors } from '../actions/errorsActions';
 
 import { loginUser } from '../actions/authActions';
 
-const url = ENDPOINTS.LOGIN;
+const url = ENDPOINTS.LOGIN();
 const timerUrl = ENDPOINTS.TIMER(mockState.auth.user.userid);
 const userProjectsUrl = ENDPOINTS.USER_PROJECTS(mockState.auth.user.userid);
 

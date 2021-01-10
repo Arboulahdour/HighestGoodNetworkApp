@@ -10,7 +10,7 @@ import { ENDPOINTS } from '../utils/URL'
  *******************************************/
 
 export const getAllUserProfiles = () => {
-  const request = axios.get(ENDPOINTS.USER_PROFILES);
+  const request = axios.get(ENDPOINTS.USER_PROFILES());
   return async (dispatch, getState) => {
     await dispatch(findUsersStart());
     request.then(res => {
@@ -39,7 +39,7 @@ export const getAllUserProfiles = () => {
 export const findUserProfiles = (keyword) => {
 
   //console.log(ENDPOINTS.USER_PROFILES, keyword);
-  const request = axios.get(ENDPOINTS.USER_PROFILES);
+  const request = axios.get(ENDPOINTS.USER_PROFILES());
   //console.log(request);
 
   return async (dispatch, getState) => {

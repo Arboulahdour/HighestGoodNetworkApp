@@ -165,7 +165,7 @@ class TeamMemberTasks extends Component {
 
             // for each task, must fetch the projectId of its wbs in order to generate appropriate link
             // currently fetches all projects, should consider refactoring if number of projects increases
-            const WBSRes = await httpService.get(ENDPOINTS.WBS_ALL)
+            const WBSRes = await httpService.get(ENDPOINTS.WBS_ALL())
             const allWBS = WBSRes.data
 
             // calculate hours done in current week and add to user obj for ease of access
@@ -250,8 +250,8 @@ class TeamMemberTasks extends Component {
             {member.hoursCurrentWeek >= member.weeklyComittedHours ? (
               <FontAwesomeIcon style={{ color: 'green' }} icon={faCircle} />
             ) : (
-              <FontAwesomeIcon style={{ color: 'red' }} icon={faCircle} />
-            )}
+                <FontAwesomeIcon style={{ color: 'red' }} icon={faCircle} />
+              )}
           </td>
           <td>
             <Link to={`/userprofile/${member._id}`}>
@@ -273,14 +273,14 @@ class TeamMemberTasks extends Component {
                     {member.taskNotifications.find(notification => {
                       return notification.taskId === task._id
                     }) ? (
-                      <FontAwesomeIcon
-                        style={{ color: 'red' }}
-                        icon={faBell}
-                        onClick={() => {
-                          this.handleOpenTaskNotificationModal(member.taskNotifications)
-                        }}
-                      />
-                    ) : null}
+                        <FontAwesomeIcon
+                          style={{ color: 'red' }}
+                          icon={faBell}
+                          onClick={() => {
+                            this.handleOpenTaskNotificationModal(member.taskNotifications)
+                          }}
+                        />
+                      ) : null}
                   </span>
                 </p>
               ))}
@@ -307,19 +307,19 @@ class TeamMemberTasks extends Component {
               <ModalBody>
                 {this.state.currentTaskNotifications.length > 0
                   ? this.state.currentTaskNotifications.map((notification, index) => (
-                      <React.Fragment key={notification.id}>
-                        <h4>{`${notification.taskNum} ${notification.taskName}`}</h4>
-                        <Table striped>
-                          <thead>
-                            <tr>
-                              <th></th>
-                              <th>Previous</th>
-                              <th>New</th>
-                              <th>Difference</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {notification.oldTaskInfos.oldWhyInfo !==
+                    <React.Fragment key={notification.id}>
+                      <h4>{`${notification.taskNum} ${notification.taskName}`}</h4>
+                      <Table striped>
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th>Previous</th>
+                            <th>New</th>
+                            <th>Difference</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {notification.oldTaskInfos.oldWhyInfo !==
                             notification.newTaskInfos.newWhyInfo ? (
                               <tr>
                                 <th>Why Task is Important</th>
@@ -335,7 +335,7 @@ class TeamMemberTasks extends Component {
                                 </td>
                               </tr>
                             ) : null}
-                            {notification.oldTaskInfos.oldIntentInfo !==
+                          {notification.oldTaskInfos.oldIntentInfo !==
                             notification.newTaskInfos.newIntentInfo ? (
                               <tr>
                                 <th>Intent of Task</th>
@@ -351,7 +351,7 @@ class TeamMemberTasks extends Component {
                                 </td>
                               </tr>
                             ) : null}
-                            {notification.oldTaskInfos.oldEndstateInfo !==
+                          {notification.oldTaskInfos.oldEndstateInfo !==
                             notification.newTaskInfos.newEndstateInfo ? (
                               <tr>
                                 <th>Task Endstate</th>
@@ -367,10 +367,10 @@ class TeamMemberTasks extends Component {
                                 </td>
                               </tr>
                             ) : null}
-                          </tbody>
-                        </Table>
-                      </React.Fragment>
-                    ))
+                        </tbody>
+                      </Table>
+                    </React.Fragment>
+                  ))
                   : null}
               </ModalBody>
               <ModalFooter>
