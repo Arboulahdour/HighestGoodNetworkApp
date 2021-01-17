@@ -1,5 +1,9 @@
 let APIEndpoint = process.env.REACT_APP_APIENDPOINT;
 
+console.log(process.env.REACT_APP_APIENDPOINT)
+console.log(process.env)
+console.log(process)
+
 if (!APIEndpoint) {
   APIEndpoint = 'https://hgnrestdev.azurewebsites.net/api';
 }
