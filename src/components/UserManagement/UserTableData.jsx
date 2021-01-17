@@ -92,6 +92,6 @@ const ActiveCell = React.memo(props => (
 /**
  * User prfoile hyper link component
  */
-const UserHyperLink = React.memo(props => <a href={`/userprofile/${props.userId}`}>{props.text}</a>);
+const UserHyperLink = React.memo(props => <a href={`#/userprofile/${props.userId}`}>{props.text}</a>);
 
 export default UserTableData;

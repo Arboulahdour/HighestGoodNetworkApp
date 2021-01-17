@@ -40,7 +40,6 @@ class Teams extends React.PureComponent {
   }
 
   render() {
-    debugger;
     const { allTeams, fetching } = this.props.state.allTeamsData;
     const teamTable = this.teamTableElements(allTeams);
     const numberOfTeams = allTeams.length;
@@ -73,7 +72,7 @@ class Teams extends React.PureComponent {
               </div>
             </React.Fragment>
           )
-      }
+        }
       </Container>
     );
   }

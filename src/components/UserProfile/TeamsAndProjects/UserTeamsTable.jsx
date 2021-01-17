@@ -3,7 +3,6 @@ import { Button, Col } from 'reactstrap';
 import './TeamsAndProjects.css';
 
 const UserTeamsTable = props =>
-  // debugger;
   (
     <div className="teamtable-container">
       <div className="container">
@@ -12,11 +11,11 @@ const UserTeamsTable = props =>
             <span className="teams-span">Teams</span>
           </Col>
           {props.edit && (
-          <Col md="5">
-            {props.isUserAdmin
-              ? <Button className="btn-addteam" color="primary" onClick={() => { props.onButtonClick(); }}>Assign Team</Button>
-              : <></>}
-          </Col>
+            <Col md="5">
+              {props.isUserAdmin
+                ? <Button className="btn-addteam" color="primary" onClick={() => { props.onButtonClick(); }}>Assign Team</Button>
+                : <></>}
+            </Col>
           )}
         </div>
       </div>
