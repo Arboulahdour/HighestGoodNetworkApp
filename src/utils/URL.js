@@ -1,12 +1,7 @@
-/* eslint-disable import/prefer-default-export */
-import axios from 'axios'
-
 let APIEndpoint = process.env.REACT_APP_APIENDPOINT;
+
 if (!APIEndpoint) {
-  // This is to resolve the issue in azure env variable
-  // APIEndpoint = fetch('/config.json').then((data) => {
-  APIEndpoint = 'https://hgnrestdev.azurewebsites.net';
-  // });
+  APIEndpoint = 'https://hgnrestdev.azurewebsites.net/api';
 }
 
 export const ENDPOINTS = {
