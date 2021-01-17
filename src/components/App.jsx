@@ -14,6 +14,7 @@ import Loading from './common/Loading'
 
 import config from "../config.json";
 import "../App.css";
+import { ENDPOINTS } from "../utils/URL";
 
 const { persistor, store } = configureStore();
 const tokenKey = config.tokenKey;
@@ -49,9 +50,10 @@ class App extends Component {
   //   return e.returnValue = "Are you sure you want to leave?\nPlease don't forget to log your time!";
   // }
 
-  // componentDidMount() {
-  //   window.addEventListener('beforeunload', this.confirmAlert);
-  // }
+  componentDidMount() {
+    // This is for triggering the instance creation of singleton ENDPOINTS
+    ENDPOINTS.USER_PROFILE();
+  }
 
   // componentWillUnmount() {
   //   window.removeEventListener('beforeunload', this.confirmAlert);
