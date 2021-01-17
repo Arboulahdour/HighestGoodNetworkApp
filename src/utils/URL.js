@@ -1,13 +1,13 @@
-const config = require('config.json')
-
-let APIEndpoint = "";
 
 // API end p[oint will be taking from the config json.
-APIEndpoint = fetch('/config.json')
-  .then(response => response.json())
-  .then((data) => {
-    APIEndpoint = data.restapi;
-  });
+
+import { ApiEndpointURL } from "../components/App";
+
+let APIEndpoint = process.env.REACT_APP_APIENDPOINT;
+
+if (!APIEndpoint) {
+  APIEndpoint = ApiEndpointURL;
+}
 
 export const ENDPOINTS = {
   USER_PROFILE: userId => `${APIEndpoint}/userprofile/${userId}`,

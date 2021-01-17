@@ -20,6 +20,7 @@ const tokenKey = config.tokenKey;
 // Require re-login 2 days before the token expires on server side
 // Avoid failure due to token expiration when user is working
 const TOKEN_LIFETIME_BUFFER = 86400 * 2;
+let ApiEndpointURL = "http://hgnrestdev.azurewebsites.net/api"
 
 // Check for token
 if (localStorage.getItem(tokenKey)) {
@@ -49,9 +50,13 @@ class App extends Component {
   //   return e.returnValue = "Are you sure you want to leave?\nPlease don't forget to log your time!";
   // }
 
-  // componentDidMount() {
-  //   window.addEventListener('beforeunload', this.confirmAlert);
-  // }
+  componentDidMount() {
+    fetch('/config.json')
+      .then(response => response.json())
+      .then((data) => {
+        ApiEndpointURL = data.restapi;
+      });
+  }
 
   // componentWillUnmount() {
   //   window.removeEventListener('beforeunload', this.confirmAlert);
@@ -74,4 +79,5 @@ class App extends Component {
   }
 }
 
+export { ApiEndpointURL };
 export default App;
