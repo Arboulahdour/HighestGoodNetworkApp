@@ -216,7 +216,7 @@ const BasicInformationTab = (props) => {
     isUserAdmin,
     isUserSelf,
     handleUserProfile,
-    formValid,
+    formValid
   } = props;
 
   return (
@@ -263,48 +263,51 @@ const BasicInformationTab = (props) => {
           formValid={formValid}
         />
       </Row>
-      <Row>
-        <Col md="6">
-          <Label>Email</Label>
-          <i
-            data-toggle="tooltip"
-            data-placement="right"
-            data-testid="info-email"
-            id="info-email"
-            style={{ fontSize: 15, cursor: 'pointer', marginLeft: 10 }}
-            aria-hidden="true"
-            className="fa fa-info-circle"
+      {(isUserAdmin || isUserSelf || userProfile.privacySettings?.email) &&
+        <Row>
+          <Col md="6">
+            <Label>Email</Label>
+            <i
+              data-toggle="tooltip"
+              data-placement="right"
+              data-testid="info-email"
+              id="info-email"
+              style={{ fontSize: 15, cursor: 'pointer', marginLeft: 10 }}
+              aria-hidden="true"
+              className="fa fa-info-circle"
+            />
+          </Col>
+          <Email
+            userProfile={userProfile}
+            isUserAdmin={isUserAdmin}
+            isUserSelf={isUserSelf}
+            handleUserProfile={handleUserProfile}
+            formValid={formValid}
           />
-        </Col>
-        <Email
-          userProfile={userProfile}
-          isUserAdmin={isUserAdmin}
-          isUserSelf={isUserSelf}
-          handleUserProfile={handleUserProfile}
-          formValid={formValid}
-        />
-      </Row>
-      <Row>
-        <Col md="6">
-          <Label>Phone</Label>
-          <i
-            data-toggle="tooltip"
-            data-placement="right"
-            data-testid="info-phone"
-            id="info-phone"
-            style={{ fontSize: 15, cursor: 'pointer', marginLeft: 10 }}
-            aria-hidden="true"
-            className="fa fa-info-circle"
+        </Row>}
+      {(isUserAdmin || isUserSelf || userProfile.privacySettings?.phoneNumber) &&
+        <Row>
+          <Col md="6">
+            <Label>Phone</Label>
+            <i
+              data-toggle="tooltip"
+              data-placement="right"
+              data-testid="info-phone"
+              id="info-phone"
+              style={{ fontSize: 15, cursor: 'pointer', marginLeft: 10 }}
+              aria-hidden="true"
+              className="fa fa-info-circle"
+            />
+          </Col>
+          <Phone
+            userProfile={userProfile}
+            isUserAdmin={isUserAdmin}
+            isUserSelf={isUserSelf}
+            handleUserProfile={handleUserProfile}
+            formValid={formValid}
           />
-        </Col>
-        <Phone
-          userProfile={userProfile}
-          isUserAdmin={isUserAdmin}
-          isUserSelf={isUserSelf}
-          handleUserProfile={handleUserProfile}
-          formValid={formValid}
-        />
-      </Row>
+        </Row>
+      }
       <Row>
         <Col md="6">
           <Label>Video Call Preference</Label>
