@@ -301,8 +301,6 @@ const TimeEntryForm = ({
         const timerStatus = await dispatch(stopTimer(userId));
         if (timerStatus === 200 || timerStatus === 201) {
 
-          // setInputs(inputs => initialState);
-          // setReminder(reminder => initialReminder);
           resetTimer();
           clearForm();
           setTimeout(()=>{
